@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { TeamCard } from "./";
-import { List, Grid } from "semantic-ui-react";
+import { List, Grid, Label, Button, Icon } from "semantic-ui-react";
 
 const Lobby = ({
   socket,
@@ -15,32 +15,27 @@ const Lobby = ({
   redTeam,
   blueTeam,
 }) => {
-  // const tempArray = [
-  //   "adsf",
-  //   "adsfdfsaf",
-  //   "asdfadsfads",
-  //   "asdfzxvczcxc",
-  //   "zxcvzxvvzx",
-  // ];
-
-  // useEffect(() => {
-  //   socket.on("teamsUpdated", (teams) => {
-  //     setRedTeam(teams.filter((team) => team.team === 0));
-  //     setBlueTeam(teams.filter((team) => team.team === 1));
-  //     setSpectators(teams.filter((team) => team.team === -1));
-
-  //     console.log("count++");
-  //     console.log(teams);
-  //   });
-  // }, [socket, setSpectators, setRedTeam, setBlueTeam]);
-
   useEffect(() => {
+    const updateTeams = (teams) => {
+      setSpectators(teams.filter((s) => s.team === -1));
+      setRedTeam(teams.filter((s) => s.team === 0));
+      setBlueTeam(teams.filter((s) => s.team === 1));
+    };
+
+    socket.emit("getLobbyStatus", room, (teams) => {
+      updateTeams(teams);
+    });
+
     socket.on("teamsUpdated", (teams) => {
+      updateTeams(teams);
       console.log(teams);
     });
-  }, [socket]);
+  }, [socket, room, setSpectators, setBlueTeam, setRedTeam]);
 
-  console.log(socket.id);
+  const handleCopy = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(room);
+  };
 
   return (
     <div className="bg-yellow-500 h-screen flex justify-center">
@@ -48,7 +43,13 @@ const Lobby = ({
         <Grid columns={3} divided>
           <Grid.Row>
             <Grid.Column>
-              <TeamCard team="red" />
+              <TeamCard
+                socket={socket}
+                name={name}
+                room={room}
+                team="red"
+                teamMem={redTeam}
+              />
             </Grid.Column>
             <Grid.Column>
               <div className="box-content p-3 rounded-t-3xl bg-gray-400">
@@ -65,10 +66,33 @@ const Lobby = ({
               </div>
             </Grid.Column>
             <Grid.Column>
-              <TeamCard />
+              <TeamCard
+                socket={socket}
+                name={name}
+                room={room}
+                team="blue"
+                teamMem={blueTeam}
+              />
             </Grid.Column>
           </Grid.Row>
+          <Grid.Row></Grid.Row>
         </Grid>
+        <div className="w-full flex justify-center p-0">
+          <div className=" max-w-full">
+            <span className="bg-gray-100">
+              <Label>{room}</Label>
+            </span>
+
+            <Button
+              className=""
+              size="mini"
+              color="teal"
+              onClick={(e) => handleCopy(e)}
+            >
+              <Icon name="copy" />
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

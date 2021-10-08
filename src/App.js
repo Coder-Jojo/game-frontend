@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import io from "socket.io-client";
 import { Home, GameArea } from "./components";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+// import { BrowserRouter as Router, Route } from "react-router-dom";
 import SocketContext from "./socketContext";
 
 // let socket = null;
@@ -31,7 +31,7 @@ const App = () => {
   if (!socket) {
     return <div>Loading...</div>;
   }
-
+  socket && console.log(socket.id);
   return (
     <SocketContext.Provider value={socket}>
       {inGame && (

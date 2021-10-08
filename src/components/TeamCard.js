@@ -1,16 +1,14 @@
 import React from "react";
 import { Button, List } from "semantic-ui-react";
 
-const TeamCard = ({ score, team, inLobby }) => {
-  const teamMem = [
-    "adsf",
-    "asdfasdf",
-    "asdfasfdasfd",
-    "adsfasd",
-    "asdfasdfasfsdfsadf",
-    "asdfasdfsadfsadf",
-    "asdfd",
-  ];
+const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
+  console.log(room);
+
+  const handleUpdateTeams = (e, informer) => {
+    e.preventDefault();
+    const color = team === "red" ? 0 : 1;
+    socket.emit("updateTeams", { name, room, color, informer });
+  };
 
   return (
     <div
@@ -26,18 +24,40 @@ const TeamCard = ({ score, team, inLobby }) => {
 
       <div className="flex flex-col mt-5">
         <h5 className="mb-1">Operative(s)</h5>
-        <List horizontal bulleted items={teamMem} />
+        <List
+          horizontal
+          bulleted
+          items={teamMem
+            .filter((mem) => mem.informer === false)
+            .map((mem) => mem.name)}
+        />
         <div className="w-auto mt-1">
-          <Button compact size="small" color="purple">
+          <Button
+            compact
+            size="small"
+            color="purple"
+            onClick={(e) => handleUpdateTeams(e, false)}
+          >
             Join as Operative
           </Button>
         </div>
       </div>
       <div className="flex flex-col mt-5">
         <h5 className="mb-1">Detective(s)</h5>
-        <List horizontal bulleted items={teamMem} />
+        <List
+          horizontal
+          bulleted
+          items={teamMem
+            .filter((mem) => mem.informer === true)
+            .map((mem) => mem.name)}
+        />
         <div className="w-auto mt-1">
-          <Button compact size="small" color="purple">
+          <Button
+            compact
+            size="small"
+            color="purple"
+            onClick={(e) => handleUpdateTeams(e, true)}
+          >
             Join as Detective
           </Button>
         </div>
