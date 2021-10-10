@@ -42,6 +42,7 @@ const GameArea = ({ name, room }) => {
         redTeam={redTeam}
         blueTeam={blueTeam}
         host={host}
+        inLobby={inLobby}
       />
     );
   else
@@ -53,6 +54,7 @@ const GameArea = ({ name, room }) => {
         spectators={spectators}
         name={name}
         room={room}
+        inLobby={inLobby}
       />
     );
 };

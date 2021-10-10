@@ -15,6 +15,7 @@ const Lobby = ({
   redTeam,
   blueTeam,
   host,
+  inLobby,
 }) => {
   useEffect(() => {
     const updateTeams = (teams) => {
@@ -82,6 +83,7 @@ const Lobby = ({
                 room={room}
                 team="red"
                 teamMem={redTeam}
+                inLobby={inLobby}
               />
             </Grid.Column>
             <Grid.Column>
@@ -107,6 +109,7 @@ const Lobby = ({
                 room={room}
                 team="blue"
                 teamMem={blueTeam}
+                inLobby={inLobby}
               />
             </Grid.Column>
           </Grid.Row>
