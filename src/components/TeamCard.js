@@ -20,7 +20,7 @@ const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
         <p className="text-4xl">{team === "red" ? "RED" : "BLUE"}</p>
         {/* <p className="text-yellow-1000">-</p> */}
         <p className="oldstyle-nums text-6xl">
-          {score[team === "red" ? 0 : 1] ? score : 0}
+          {score ? score[team === "red" ? 0 : 1] : 0}
         </p>
       </div>
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "semantic-ui-react";
-import { Chat, TeamCard } from ".";
+import { Board, Chat, TeamCard } from ".";
 
 const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
   const [score, setScore] = useState([0, 0]);
@@ -48,7 +48,9 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
               />
             </div>
           </Grid.Column>
-          <Grid.Column width={9}>asldfk;afsd</Grid.Column>
+          <Grid.Column width={9}>
+            <Board socket={socket} />{" "}
+          </Grid.Column>
           <Grid.Column width={3} className="h-screen p-0 m-0">
             <Chat socket={socket} name={name} room={room} />
           </Grid.Column>
