@@ -31,7 +31,7 @@ const App = () => {
   if (!socket) {
     return <div>Loading...</div>;
   }
-  socket && console.log(socket.id);
+
   return (
     <SocketContext.Provider value={socket}>
       {inGame && (

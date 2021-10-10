@@ -14,6 +14,7 @@ const Lobby = ({
   room,
   redTeam,
   blueTeam,
+  host,
 }) => {
   useEffect(() => {
     const updateTeams = (teams) => {
@@ -28,7 +29,7 @@ const Lobby = ({
 
     socket.on("teamsUpdated", (teams) => {
       updateTeams(teams);
-      console.log(teams);
+      // console.log(teams);
     });
   }, [socket, room, setSpectators, setBlueTeam, setRedTeam]);
 
@@ -37,9 +38,41 @@ const Lobby = ({
     navigator.clipboard.writeText(room);
   };
 
+  const handleReset = (e) => {
+    e.preventDefault();
+    socket.emit("reset", room);
+  };
+
+  const handleCreateGame = (e) => {
+    e.preventDefault();
+    socket.emit("createGame", room, (err) => {
+      if (err) alert(err);
+    });
+  };
+
   return (
     <div className="bg-yellow-500 h-screen flex justify-center">
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col">
+        <div className="h-20"></div>
+        <div className="w-full bg-green-400 flex box-content rounded-3xl h-16 mb-3 justify-between">
+          <p className="self-center pl-8 pt-4">NO_NAME_GAME</p>
+          <div className="self-center pr-8">
+            {host && (
+              <Button compact color="purple" onClick={(e) => handleReset(e)}>
+                Reset
+              </Button>
+            )}
+            {host && (
+              <Button
+                compact
+                color="purple"
+                onClick={(e) => handleCreateGame(e)}
+              >
+                Start Game
+              </Button>
+            )}
+          </div>
+        </div>
         <Grid columns={3} divided>
           <Grid.Row>
             <Grid.Column>
@@ -52,15 +85,17 @@ const Lobby = ({
               />
             </Grid.Column>
             <Grid.Column>
-              <div className="box-content p-3 rounded-t-3xl bg-gray-400">
-                <p className="text-center">SPECTATATORS </p>
+              <div className="box-content p-3 rounded-t-3xl bg-gray-600">
+                <p className="text-center text-gray-50 text-2xl">
+                  SPECTATATORS{" "}
+                </p>
               </div>
-              <input type="text" />
+              {/* <Button color="purple"> JOIN SPECTATORS</Button> */}
               <div className="box-content p-3 rounded-b-3xl bg-gray-50">
                 <List
                   className="text-center"
                   divided
-                  size="huge"
+                  size="medium"
                   items={spectators?.map((a) => a.name)}
                 />
               </div>

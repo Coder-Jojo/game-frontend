@@ -2,8 +2,6 @@ import React from "react";
 import { Button, List } from "semantic-ui-react";
 
 const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
-  console.log(room);
-
   const handleUpdateTeams = (e, informer) => {
     e.preventDefault();
     const color = team === "red" ? 0 : 1;
@@ -14,16 +12,16 @@ const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
     <div
       className={`box-content p-4 rounded-3xl bg-${
         team === "red" ? "red" : "blue"
-      }-500 px-8 pt-5 flex-col flex max-w-sm`}
+      }-600 px-8 pt-5 flex-col flex max-w-3xl w-64 mr-16`}
     >
-      <div className="flex justify-around w-full">
-        <p>{team === "red" ? "RED" : "BLUE"}</p>
-        <p>-</p>
-        <p>{score ? score : 0}</p>
+      <div className="flex justify-between w-full  font-black  text-yellow-400">
+        <p className="text-4xl">{team === "red" ? "RED" : "BLUE"}</p>
+        {/* <p className="text-yellow-1000">-</p> */}
+        <p className="oldstyle-nums text-6xl">{score ? score : 0}</p>
       </div>
 
       <div className="flex flex-col mt-5">
-        <h5 className="mb-1">Operative(s)</h5>
+        <h5 className={`mb-1 text-${team}-300`}>Operative(s)</h5>
         <List
           horizontal
           bulleted
@@ -43,7 +41,7 @@ const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
         </div>
       </div>
       <div className="flex flex-col mt-5">
-        <h5 className="mb-1">Detective(s)</h5>
+        <h5 className={`mb-1 text-${team}-300`}>Detective(s)</h5>
         <List
           horizontal
           bulleted

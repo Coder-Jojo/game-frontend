@@ -8,6 +8,7 @@ const GameArea = ({ name, room }) => {
   const [redTeam, setRedTeam] = useState([]);
   const [blueTeam, setBlueTeam] = useState([]);
   const [spectators, setSpectators] = useState([]);
+  const [host, setHost] = useState(false);
 
   const socket = React.useContext(SocketContext);
 
@@ -20,7 +21,11 @@ const GameArea = ({ name, room }) => {
       setInLobby(true);
       setShowResult(true);
     });
-  }, [socket]);
+
+    socket.emit("isHost", { name, room }, (host) => {
+      setHost(host);
+    });
+  }, [socket, setHost, name, room]);
 
   if (inLobby)
     return (
@@ -36,11 +41,19 @@ const GameArea = ({ name, room }) => {
         room={room}
         redTeam={redTeam}
         blueTeam={blueTeam}
+        host={host}
       />
     );
   else
     return (
-      <Game redTeam={redTeam} blueTeam={blueTeam} spectators={spectators} />
+      <Game
+        socket={socket}
+        redTeam={redTeam}
+        blueTeam={blueTeam}
+        spectators={spectators}
+        name={name}
+        room={room}
+      />
     );
 };
 
