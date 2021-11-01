@@ -1,16 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { List, Input } from "semantic-ui-react";
 import ScrollToBottom from "react-scroll-to-bottom";
+import positiveSound from "../sounds/p1.wav";
+import negativeSound from "../sounds/n2.wav";
 
 const Chat = ({ socket, name, room }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [positive] = useState(new Audio(positiveSound));
+  const [negative] = useState(new Audio(negativeSound));
 
   useEffect(() => {
     socket.on("getMessage", (message) => {
       setMessages((prev) => [...prev, message]);
+
+      if (message.type === 2) {
+        positive.pause();
+        positive.currentTime = 0;
+        positive.play();
+      } else if (message.type === -1) {
+        negative.pause();
+        negative.currentTime = 0;
+        negative.play();
+      }
     });
-  }, [socket]);
+  }, [socket, positive, negative]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -20,24 +34,34 @@ const Chat = ({ socket, name, room }) => {
   };
 
   const CreateMessage = (msg, i) => {
-    let color = "white";
-    if (msg.type === 0) color = "red";
-    else if (msg.type === 1) color = "blue";
+    let color = "gray";
+    let weight = 400;
+
+    if (msg.type === 0 || msg.type === 1) {
+      if (msg.type === 0) color = "red";
+      else if (msg.type === 1) color = "blue";
+    }
 
     let textColor = "white";
-    if (msg.type === 2) textColor = "green";
-    else if (msg.type === 3) textColor = "yellow";
+
+    if (msg.type === 2 || msg.type === -1) {
+      weight = 200;
+      if (msg.type === 2) textColor = "green";
+      else if (msg.type === -1) textColor = "red";
+    }
 
     return (
-      <div key={i} className={`bg-${color}-400`}>
+      <div key={i} className={`bg-${color}-${weight}`}>
         <List.Item className="p-0">
           <p
             className={` text-${textColor}${
-              msg.type < 2 ? "" : "-600 font-semibold"
+              msg.type === 1 || msg.type === 0 ? "" : "-600 font-semibold"
             }`}
           >
-            <b className="text-black">{msg.name && `${msg.name}: `}</b>
-            {msg.msg}
+            <b className="text-black">
+              {(msg.type === 1 || msg.type === 0) && `${msg.name}: `}
+            </b>
+            {msg.type === -1 ? `PhaQueue ${msg.name} for cheating` : msg.msg}
           </p>
         </List.Item>
       </div>

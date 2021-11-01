@@ -5,3 +5,5 @@ export { default as GameArea } from "./GameArea.js";
 export { default as Lobby } from "./Lobby.js";
 export { default as Game } from "./Game.js";
 export { default as TeamCard } from "./TeamCard.js";
+export { default as ShowGrid } from "./ShowGrid.js";
+export { default as Card } from "./Card.js";

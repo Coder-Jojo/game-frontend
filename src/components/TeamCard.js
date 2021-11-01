@@ -26,13 +26,17 @@ const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
 
       <div className="flex flex-col mt-5">
         <h5 className={`mb-1 text-${team}-300`}>Operative(s)</h5>
-        <List
-          horizontal
-          bulleted
-          items={teamMem
+        <List horizontal celled>
+          {teamMem
             .filter((mem) => mem.informer === false)
-            .map((mem) => mem.name)}
-        />
+            .map((mem, i) => {
+              return (
+                <List.Item key={i}>
+                  <p className="text-white font-bold">{mem.name}</p>
+                </List.Item>
+              );
+            })}
+        </List>
         {inLobby && (
           <div className="w-auto mt-1">
             <Button
@@ -48,13 +52,17 @@ const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
       </div>
       <div className="flex flex-col mt-5">
         <h5 className={`mb-1 text-${team}-300`}>Detective(s)</h5>
-        <List
-          horizontal
-          bulleted
-          items={teamMem
+        <List horizontal celled>
+          {teamMem
             .filter((mem) => mem.informer === true)
-            .map((mem) => mem.name)}
-        />
+            .map((mem, i) => {
+              return (
+                <List.Item key={i}>
+                  <p className="text-white font-bold">{mem.name}</p>
+                </List.Item>
+              );
+            })}
+        </List>
         {inLobby && (
           <div className="w-auto mt-1">
             <Button

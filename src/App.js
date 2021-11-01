@@ -7,26 +7,12 @@ import SocketContext from "./socketContext";
 // let socket = null;
 
 const socket = io("http://localhost:5000");
+// const socket = io("https://jojo-game-1.herokuapp.com");
 
 const App = () => {
-  // const [socket, setSocket] = useState(null);
   const [inGame, setInGame] = useState(false);
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
-
-  // socket = io("http://localhost:5000");
-
-  // useEffect(() => {
-  //   setSocket(io("http://localhost:5000"));
-  //   // socket = io("http://localhost:5000");
-  // }, []);
-
-  // useEffect(() => {
-  //   socket &&
-  //     socket.on("teamsUpdated", (teams) => {
-  //       console.log(teams);
-  //     });
-  // }, [socket]);
 
   if (!socket) {
     return <div>Loading...</div>;
@@ -53,25 +39,6 @@ const App = () => {
       )}
     </SocketContext.Provider>
   );
-
-  // return (
-  //   <SocketContext.Provider value={socket}>
-  //     <Router>
-  //       <Route path="/" exact>
-  //         <Home
-  //           socket={socket}
-  //           name={name}
-  //           setName={setName}
-  //           setRoom={setRoom}
-  //           room={room}
-  //         />
-  //       </Route>
-  //       <Route path="/gamearea" exact>
-  //         <GameArea socket={socket} name={name} room={room} />
-  //       </Route>
-  //     </Router>
-  //   </SocketContext.Provider>
-  // );
 };
 
 export default App;

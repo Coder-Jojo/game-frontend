@@ -88,9 +88,7 @@ const Lobby = ({
             </Grid.Column>
             <Grid.Column>
               <div className="box-content p-3 rounded-t-3xl bg-gray-600">
-                <p className="text-center text-gray-50 text-2xl">
-                  SPECTATATORS{" "}
-                </p>
+                <p className="text-center text-gray-50 text-2xl">SPECTATORS </p>
               </div>
               {/* <Button color="purple"> JOIN SPECTATORS</Button> */}
               <div className="box-content p-3 rounded-b-3xl bg-gray-50">

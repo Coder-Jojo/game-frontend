@@ -4,8 +4,6 @@ import SocketContext from "../socketContext";
 
 const Home = ({ name, setName, setRoom, room, setInGame }) => {
   const socket = React.useContext(SocketContext);
-  // const [name, setName] = useState("");
-  // .console.log(socket.id);
 
   const exampleReducer = (state, action) => {
     switch (action.type) {
@@ -17,7 +15,7 @@ const Home = ({ name, setName, setRoom, room, setInGame }) => {
         throw new Error("Unsupported action...");
     }
   };
-  // const [room, setRoom] = useState("");
+
   const [state, dispatch] = React.useReducer(exampleReducer, {
     open: false,
     size: undefined,
@@ -30,8 +28,7 @@ const Home = ({ name, setName, setRoom, room, setInGame }) => {
 
     socket.emit("createRoom", name, (room) => {
       setRoom(room);
-      // console.log(room);
-      // window.location.href = "/gamearea";
+
       setInGame(true);
     });
   };
@@ -51,7 +48,6 @@ const Home = ({ name, setName, setRoom, room, setInGame }) => {
       if (err) {
         alert(err);
       } else {
-        // window.location.href = "/gamearea";
         setInGame(true);
       }
     });
@@ -119,7 +115,6 @@ const Home = ({ name, setName, setRoom, room, setInGame }) => {
               socket.emit("sendInfo", room, (data) => {
                 console.log(data);
               });
-              // window.location.href = "/gamearea";
             }}
           >
             showInfo
