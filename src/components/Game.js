@@ -102,7 +102,7 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
           </Grid.Column>
           <Grid.Column width={9}>
             <div className="grid grid-rows-6 gap-4 h-full">
-              <div className="row-span-4">
+              <div className="row-span-5">
                 <Board socket={socket} turn={turn} room={room} />
               </div>
               <div>
