@@ -41,7 +41,7 @@ const Card = ({ wordArr, index, selected, detective, setSelected }) => {
   return (
     <div className="mb-3">
       {selected === index && (
-        <Label color="black" ribbon as="a">
+        <Label color="red" ribbon as="a">
           selected
         </Label>
       )}
@@ -56,7 +56,7 @@ const Card = ({ wordArr, index, selected, detective, setSelected }) => {
           <div
             className={`flex flex-col justify-center h-full ${difficulty} box-border border-white border-2 rounded-xl text-white shadow-2xl`}
           >
-            {detective && (
+            {detective && !wordArr[index].guessed && (
               // <Button fluid inverted className="h-full" onClick={handleSelect}>
               <button
                 className="h-full w-full hover:text-black hover:bg-gray-50"
@@ -74,7 +74,7 @@ const Card = ({ wordArr, index, selected, detective, setSelected }) => {
                 <CalculateNoOfUnderscore />
               </p>
             )}
-            {!detective && wordArr[index].guessed && (
+            {wordArr[index].guessed && (
               <p className="font-black text-3xl text-center">
                 {/* {wordArr[index].word} */}
                 <ShowWord word={wordArr[index].word} />

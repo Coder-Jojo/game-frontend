@@ -69,7 +69,7 @@ const Chat = ({ socket, name, room }) => {
   };
 
   return (
-    <div className="flex justify-between width-5/6 h-full p-0 m-0 flex-col -mt-4 -ml-4 -mr-4 ">
+    <div className="flex justify-between width-5/6 h-full p-0 m-0 flex-col ">
       <div className="flex bg-gray-700 self-center h-16 w-full justify-center">
         <h2 className="self-center text-white">MESSAGES</h2>
       </div>

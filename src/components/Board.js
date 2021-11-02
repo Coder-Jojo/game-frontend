@@ -1,17 +1,21 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Menu, Icon, Button, Progress } from "semantic-ui-react";
+import { Menu, Icon, Button, Progress, Dimmer } from "semantic-ui-react";
+import resultSound from "../sounds/res2.wav";
 
-const Board = ({ socket, room }) => {
+const Board = ({ socket, room, myTurn }) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushRadius, setBrushRadius] = useState(5);
   const [brushColor, setBrushColor] = useState("black");
+  const [dimmer, setDimmer] = useState(false);
+  const [word, setWord] = useState("");
+  const [sound] = useState(new Audio(resultSound));
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
   const prepareCanvas = () => {
     const canvas = canvasRef.current;
-    canvas.width = (window.innerWidth * 8.6) / 16;
-    canvas.height = (window.innerHeight * 2) / 3;
+    canvas.width = 910;
+    canvas.height = 500;
     // console.log(window.innerWidth, window.innerHeight);
     // canvas.style.width = `${window.innerWidth}px`;
     // canvas.style.height = `${window.innerHeight}px`;
@@ -28,6 +32,8 @@ const Board = ({ socket, room }) => {
   };
 
   const startDrawing = ({ nativeEvent }) => {
+    if (!myTurn) return;
+
     const { offsetX, offsetY } = nativeEvent;
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
@@ -36,13 +42,15 @@ const Board = ({ socket, room }) => {
   };
 
   const finishDrawing = () => {
+    if (!myTurn) return;
+
     contextRef.current.closePath();
     setIsDrawing(false);
     socket.emit("finishDrawing", { room });
   };
 
   const draw = ({ nativeEvent }) => {
-    if (!isDrawing) {
+    if (!isDrawing || !myTurn) {
       return;
     }
     const { offsetX, offsetY } = nativeEvent;
@@ -88,7 +96,14 @@ const Board = ({ socket, room }) => {
       setBrushRadius(brushRadius);
       contextRef.current.lineWidth = brushRadius;
     });
-  }, [socket]);
+
+    socket.on("onShowWord", (word) => {
+      setWord(word);
+      setDimmer(true);
+      setTimeout(() => setDimmer(false), 5000);
+      sound.play();
+    });
+  }, [socket, sound]);
 
   const handleClear = () => {
     const canvas = canvasRef.current;
@@ -124,17 +139,24 @@ const Board = ({ socket, room }) => {
   };
 
   return (
-    <div className="h-full w-full ">
-      <canvas
-        ref={canvasRef}
-        onMouseDown={startDrawing}
-        onMouseUp={finishDrawing}
-        onMouseMove={draw}
-        onWheel={(e) => handleWheel(e)}
-      />
+    <div className=" w-full overflow-hidden">
+      <Dimmer.Dimmable as="div" dimmed={dimmer}>
+        <canvas
+          ref={canvasRef}
+          onMouseDown={startDrawing}
+          onMouseUp={finishDrawing}
+          onMouseMove={draw}
+          onWheel={(e) => handleWheel(e)}
+        />
+        <Dimmer active={dimmer} onClickOutside={() => setDimmer((d) => !d)}>
+          <p className="text-5xl font-black text-white">
+            The word was <span className="text-8xl">{word}. </span>
+          </p>
+        </Dimmer>
+      </Dimmer.Dimmable>
       <Menu>
         <Menu.Item fitted>
-          <Button.Group size="huge" icon>
+          <Button.Group size="massive" icon>
             <Button color="red" onClick={() => handleBrushColor("red")} />
             <Button color="orange" onClick={() => handleBrushColor("orange")} />
             <Button color="yellow" onClick={() => handleBrushColor("yellow")} />

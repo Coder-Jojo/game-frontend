@@ -14,7 +14,7 @@ const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
     <div
       className={`box-content p-4 rounded-3xl bg-${
         team === "red" ? "red" : "blue"
-      }-600 px-8 pt-5 flex-col flex max-w-3xl w-64 mr-16`}
+      }-600 px-8 pt-5 flex-col flex max-w-3xl w-64`}
     >
       <div className="flex justify-between w-full  font-black  text-yellow-400">
         <p className="text-4xl">{team === "red" ? "RED" : "BLUE"}</p>
