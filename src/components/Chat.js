@@ -53,7 +53,7 @@ const Chat = ({ socket, name, room }) => {
 
   const CorrectAns = ({ msg }) => {
     return (
-      <div className="bg-gray-200 text-green-600 font-black p-1 pb-2 border border-black">
+      <div className="bg-gray-200 text-green-600 font-semibold p-1 pb-2 border border-black">
         {msg}
       </div>
     );
@@ -61,7 +61,7 @@ const Chat = ({ socket, name, room }) => {
 
   const Cheating = ({ name }) => {
     return (
-      <div className="bg-gray-200 text-red-600 font-black p-1 pb-2 border border-black">
+      <div className="bg-gray-200 text-red-600 font-semibold p-1 pb-2 border border-black">
         PhaQueue {name} for cheating
       </div>
     );

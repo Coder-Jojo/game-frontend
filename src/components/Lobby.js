@@ -60,37 +60,46 @@ const Lobby = ({
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className="grid grid-rows-6 gap-3 max-w-screen-lg mx-auto h-full">
-        <div className="row-span-1 flex flex-col overflow-hidden justify-end">
-          <div className="w-full bg-gray-900 grid grid-cols-3 box-content rounded-3xl h-20">
-            <div className="h-20 place-self-center pb-8">
-              <img src={logo} alt="logo" style={{ height: "95%" }} />
+        <div className="h-full flex items-end">
+          <div className="h-20 w-full rounded-3xl grid grid-cols-3 bg-gray-900">
+            <div className="h-full grid place-content-center p-0">
+              <img src={logo} alt="logo" className="h-16" />
             </div>
-            <p className="place-self-center self-begin font-black text-6xl text-yellow-600 pt-2">
-              LOBBY
-            </p>
-            <div className="h-20 place-self-center">
-              {host && (
-                <Button compact color="purple" onClick={(e) => handleReset(e)}>
-                  Reset
-                </Button>
-              )}
-              {host && (
+
+            <div className="h-full grid place-content-center p-0">
+              <p className="place-self-center self-begin font-black text-6xl text-yellow-600">
+                LOBBY
+              </p>
+            </div>
+
+            <div className="h-full grid place-content-center p-0">
+              <div>
                 <Button
                   compact
-                  color="purple"
-                  onClick={(e) => handleCreateGame(e)}
+                  color={mute ? "green" : "red"}
+                  onClick={() => setMute((m) => !m)}
                 >
-                  Start Game
+                  {mute ? "Unmute" : "Mute"}
                 </Button>
-              )}
-
-              <Button
-                compact
-                color={mute ? "green" : "red"}
-                onClick={() => setMute((m) => !m)}
-              >
-                {mute ? "Unmute" : "Mute"}
-              </Button>
+                {host && (
+                  <Button
+                    compact
+                    color="purple"
+                    onClick={(e) => handleReset(e)}
+                  >
+                    Reset
+                  </Button>
+                )}
+                {host && (
+                  <Button
+                    compact
+                    color="purple"
+                    onClick={(e) => handleCreateGame(e)}
+                  >
+                    Start Game
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
