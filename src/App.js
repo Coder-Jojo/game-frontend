@@ -6,8 +6,8 @@ import SocketContext from "./socketContext";
 
 // let socket = null;
 
-// const socket = io("http://localhost:5000");
-const socket = io("https://jojo-game-1.herokuapp.com");
+const socket = io("http://localhost:5000");
+// const socket = io("https://jojo-game-1.herokuapp.com");
 
 const App = () => {
   const [inGame, setInGame] = useState(false);

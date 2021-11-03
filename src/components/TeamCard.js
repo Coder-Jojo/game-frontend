@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, List } from "semantic-ui-react";
 
 const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
+  const [bgColor, setBgColor] = useState("bg-red-600");
+
+  useEffect(() => {
+    if (team === "red") setBgColor("bg-red-600");
+    else setBgColor("bg-blue-600");
+  }, [team]);
+
   const handleUpdateTeams = (e, informer) => {
     e.preventDefault();
     const color = team === "red" ? 0 : 1;
     socket.emit("updateTeams", { name, room, color, informer });
   };
 
-  // console.log(inLobby);
-
   return (
     <div
-      className={`box-content p-4 rounded-3xl bg-${
-        team === "red" ? "red" : "blue"
-      }-600 px-8 pt-5 flex-col flex max-w-3xl w-64`}
+      className={`box-content p-4 rounded-3xl ${bgColor} px-8 pt-5 flex-col flex max-w-3xl w-64`}
     >
       <div className="flex justify-between w-full  font-black  text-yellow-400">
         <p className="text-4xl">{team === "red" ? "RED" : "BLUE"}</p>

@@ -8,6 +8,7 @@ const Board = ({ socket, room, myTurn }) => {
   const [brushColor, setBrushColor] = useState("black");
   const [dimmer, setDimmer] = useState(false);
   const [word, setWord] = useState("");
+  const [canDraw, setCanDraw] = useState(false);
   const [sound] = useState(new Audio(resultSound));
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
@@ -32,7 +33,7 @@ const Board = ({ socket, room, myTurn }) => {
   };
 
   const startDrawing = ({ nativeEvent }) => {
-    if (!myTurn) return;
+    if (!myTurn || !canDraw) return;
 
     const { offsetX, offsetY } = nativeEvent;
     contextRef.current.beginPath();
@@ -42,7 +43,7 @@ const Board = ({ socket, room, myTurn }) => {
   };
 
   const finishDrawing = () => {
-    if (!myTurn) return;
+    if (!myTurn || !canDraw) return;
 
     contextRef.current.closePath();
     setIsDrawing(false);
@@ -50,7 +51,7 @@ const Board = ({ socket, room, myTurn }) => {
   };
 
   const draw = ({ nativeEvent }) => {
-    if (!isDrawing || !myTurn) {
+    if (!isDrawing || !myTurn || !canDraw) {
       return;
     }
     const { offsetX, offsetY } = nativeEvent;
@@ -103,9 +104,19 @@ const Board = ({ socket, room, myTurn }) => {
       setTimeout(() => setDimmer(false), 5000);
       sound.play();
     });
+
+    socket.on("startDraw", () => {
+      setCanDraw(true);
+    });
+
+    socket.on("stopDraw", () => {
+      setCanDraw(false);
+    });
   }, [socket, sound]);
 
   const handleClear = () => {
+    if (!myTurn || !canDraw) return;
+
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.fillStyle = "white";
@@ -114,6 +125,8 @@ const Board = ({ socket, room, myTurn }) => {
   };
 
   const handleWheel = (e) => {
+    if (!myTurn || !canDraw) return;
+
     let send = false;
     if (e.deltaY > 0) {
       if (brushRadius > 1) {
@@ -133,6 +146,8 @@ const Board = ({ socket, room, myTurn }) => {
   };
 
   const handleBrushColor = (brushColor) => {
+    if (!myTurn || !canDraw) return;
+
     setBrushColor(brushColor);
     contextRef.current.strokeStyle = brushColor;
     socket.emit("brushColor", { room, brushColor });
