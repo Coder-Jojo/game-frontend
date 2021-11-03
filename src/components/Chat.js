@@ -7,8 +7,6 @@ import negativeSound from "../sounds/n2.wav";
 const Chat = ({ socket, name, room }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  // const [bgChatColor, setBgChatColor] = useState("bg-gray-200");
-  // const [msgColor, setMsgColor] = useState("");
   const [positive] = useState(new Audio(positiveSound));
   const [negative] = useState(new Audio(negativeSound));
 
@@ -37,8 +35,8 @@ const Chat = ({ socket, name, room }) => {
 
   const RedMsg = ({ name, msg }) => {
     return (
-      <div className="bg-red-400 p-2">
-        <span className="text-black font-semibold">{name}: </span>
+      <div className="bg-red-400 p-1 pb-2 border border-red-800">
+        <span className="text-black font-semibold ">{name}: </span>
         <span className="text-white">{msg}</span>
       </div>
     );
@@ -46,7 +44,7 @@ const Chat = ({ socket, name, room }) => {
 
   const BlueMsg = ({ name, msg }) => {
     return (
-      <div className="bg-blue-400 p-2">
+      <div className="bg-blue-400 p-1 pb-2 border border-blue-800">
         <span className="text-black font-semibold">{name}: </span>
         <span className="text-white">{msg}</span>
       </div>
@@ -55,62 +53,34 @@ const Chat = ({ socket, name, room }) => {
 
   const CorrectAns = ({ msg }) => {
     return (
-      <div className="bg-gray-200 text-green-600 font-black p-2">{msg}</div>
+      <div className="bg-gray-200 text-green-600 font-black p-1 pb-2 border border-black">
+        {msg}
+      </div>
     );
   };
 
   const Cheating = ({ name }) => {
     return (
-      <div className="bg-gray-200 text-red-600 font-black p-2">
+      <div className="bg-gray-200 text-red-600 font-black p-1 pb-2 border border-black">
         PhaQueue {name} for cheating
       </div>
     );
   };
 
+  const NewRound = ({ msg }) => {
+    return (
+      <div className="bg-gray-600 text-white font-black p-1 pb-2 border border-white">
+        {msg}
+      </div>
+    );
+  };
+
   const CreateMessage = ({ msg }) => {
-    // let color = "gray";
-    // let weight = 400;
-
-    // if (msg.type === 0 || msg.type === 1) {
-    //   if (msg.type === 0) color = "red";
-    //   else if (msg.type === 1) color = "blue";
-    // }
-
-    // let textColor = "white";
-
-    // if (msg.type === 2 || msg.type === -1) {
-    //   weight = 200;
-    //   if (msg.type === 2) textColor = "green";
-    //   else if (msg.type === -1) textColor = "red";
-    // }
-
-    // let setBgChatColor = `bg-${color}-${weight}`;
-    // let setMsgColor = "";
-    // if (msg.type === 1 || msg.type === 0) setMsgColor = `text-${textColor}`;
-    // else setMsgColor = `text-${textColor}-600 font-semibold`;
-
     if (msg.type === 0) return <RedMsg name={msg.name} msg={msg.msg} />;
     else if (msg.type === 1) return <BlueMsg name={msg.name} msg={msg.msg} />;
     else if (msg.type === 2) return <CorrectAns msg={msg.msg} />;
+    else if (msg.type === 3) return <NewRound msg={msg.msg} />;
     else return <Cheating name={msg.name} />;
-
-    // return (
-    //   <div key={i} className={setBgChatColor}>
-    //     <List.Item className="p-0">
-    //       <p
-    //         // className={` text-${textColor}${
-    //         //   msg.type === 1 || msg.type === 0 ? "" : "-600 font-semibold"
-    //         // }`}
-    //         className={setMsgColor}
-    //       >
-    //         <b className="text-black">
-    //           {(msg.type === 1 || msg.type === 0) && `${msg.name}: `}
-    //         </b>
-    //         {msg.type === -1 ? `PhaQueue ${msg.name} for cheating` : msg.msg}
-    //       </p>
-    //     </List.Item>
-    //   </div>
-    // );
   };
 
   return (

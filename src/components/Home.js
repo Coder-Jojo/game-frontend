@@ -58,7 +58,6 @@ const Home = ({ name, setName, setRoom, room, setInGame }) => {
               Welcome Officer !!
             </p>
 
-            {/* <p className="mb-3 text-4xl self-center">Choose a nickname</p> */}
             <Input
               className="mt-0 "
               placeholder="Enter a nickname"

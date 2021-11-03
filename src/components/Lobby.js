@@ -18,6 +18,8 @@ const Lobby = ({
   blueTeam,
   host,
   inLobby,
+  mute,
+  setMute,
 }) => {
   useEffect(() => {
     const updateTeams = (teams) => {
@@ -32,7 +34,6 @@ const Lobby = ({
 
     socket.on("teamsUpdated", (teams) => {
       updateTeams(teams);
-      // console.log(teams);
     });
   }, [socket, room, setSpectators, setBlueTeam, setRedTeam]);
 
@@ -58,16 +59,16 @@ const Lobby = ({
       className="h-screen bg-center bg-cover"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      <div className="grid grid-rows-6 max-w-screen-lg mx-auto h-full">
-        <div className="flex flex-col overflow-hidden justify-end">
-          <div className="w-full bg-gray-900 flex box-content rounded-3xl h-16 mb-3 justify-between pl-6 pt-1 pb-1">
-            <div className="h-20">
-              <img src={logo} alt="logo" style={{ height: "75%" }} />
+      <div className="grid grid-rows-6 gap-3 max-w-screen-lg mx-auto h-full">
+        <div className="row-span-1 flex flex-col overflow-hidden justify-end">
+          <div className="w-full bg-gray-900 grid grid-cols-3 box-content rounded-3xl h-20">
+            <div className="h-20 place-self-center pb-8">
+              <img src={logo} alt="logo" style={{ height: "95%" }} />
             </div>
-            <p className="self-begin font-black text-6xl text-yellow-600">
+            <p className="place-self-center self-begin font-black text-6xl text-yellow-600 pt-2">
               LOBBY
             </p>
-            <div className="self-center pr-8">
+            <div className="h-20 place-self-center">
               {host && (
                 <Button compact color="purple" onClick={(e) => handleReset(e)}>
                   Reset
@@ -82,6 +83,14 @@ const Lobby = ({
                   Start Game
                 </Button>
               )}
+
+              <Button
+                compact
+                color={mute ? "green" : "red"}
+                onClick={() => setMute((m) => !m)}
+              >
+                {mute ? "Unmute" : "Mute"}
+              </Button>
             </div>
           </div>
         </div>
@@ -102,7 +111,6 @@ const Lobby = ({
             <div className="box-content p-3 rounded-t-3xl bg-gray-600">
               <p className="text-center text-gray-50 text-2xl">SPECTATORS </p>
             </div>
-            {/* <Button color="purple"> JOIN SPECTATORS</Button> */}
             <div className="box-content p-3 rounded-b-3xl bg-gray-50">
               <List
                 className="text-center"

@@ -15,7 +15,7 @@ const Board = ({ socket, room, myTurn }) => {
 
   const prepareCanvas = () => {
     const canvas = canvasRef.current;
-    canvas.width = 910;
+    canvas.width = 1500;
     canvas.height = 500;
     // console.log(window.innerWidth, window.innerHeight);
     // canvas.style.width = `${window.innerWidth}px`;
@@ -196,8 +196,6 @@ const Board = ({ socket, room, myTurn }) => {
             color={brushColor}
             label="Brush Radius"
           />
-          {/* Brush Radius
-          </Progress> */}
         </div>
         <Menu.Item fitted={"vertically"} position="right" onClick={handleClear}>
           <Icon name="trash" size="large" color="black" />

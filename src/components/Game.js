@@ -81,7 +81,7 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
 
   return (
     <div
-      className={`bg-${turnBG}-50 h-screen p-0 bg-center bg-cover grid grid-cols-5`}
+      className={`bg-${turnBG}-50 h-screen p-0 bg-center bg-cover grid grid-cols-5 gap-2`}
       style={{ backgroundImage: `url(${turnBG})` }}
     >
       <div className="col-span-1 grid grid-rows-5 overflow-hidden pt-2">
@@ -120,7 +120,7 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
         </div>
       </div>
 
-      <div className="col-span-3 h-full overflow-hidden pl-2 pr-2 pt-2">
+      <div className="col-span-3 h-full overflow-hidden pt-2">
         <Board socket={socket} myTurn={myTurn} room={room} />
         <ShowGrid
           socket={socket}
