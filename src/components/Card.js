@@ -25,12 +25,23 @@ const Card = ({ wordArr, index, selected, detective, setSelected }) => {
   };
 
   const ShowWord = ({ word }) => {
-    let newWord = "";
-    for (let i = 0; i < size; i++) {
-      newWord += word[i];
-      if (i === 7) newWord += "\n";
-    }
-    return <>{newWord}</>;
+    // let newWord = "";
+    // for (let i = 0; i < size; i++) {
+    //   newWord += word[i];
+    //   if (i === 7) newWord += "\n";
+    // }
+    // return <>{newWord}</>;
+
+    const newWord = word.split("");
+    return (
+      <>
+        {newWord.map((w, i) => (
+          <span className="inline-block" key={i}>
+            {w}
+          </span>
+        ))}
+      </>
+    );
   };
 
   const handleSelect = () => {

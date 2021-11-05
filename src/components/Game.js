@@ -20,10 +20,11 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
 
     if (wordLen === -1) newWord = "Choosing...";
     else {
-      for (let i = 0; i < wordLen; i++) {
-        newWord += "_";
-      }
-      newWord = newWord.split("").join(" ");
+      // for (let i = 0; i < wordLen; i++) {
+      //   newWord += "_";
+      // }
+      // newWord = newWord.split("").join(" ");
+      newWord = `${wordLen} letters`;
     }
     return <p>{newWord}</p>;
   };
