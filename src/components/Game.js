@@ -34,7 +34,7 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
       if (time >= 79) {
         guessingSound.play();
       }
-      setTime(time);
+      if (time >= 0) setTime(time);
     });
 
     socket.on("updateScore", (score) => {

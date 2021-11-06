@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { TeamCard } from "./";
-import { List, Label, Button, Icon } from "semantic-ui-react";
+import { List, Label, Button, Icon, Dimmer } from "semantic-ui-react";
 import backgroundImage from "../assets/detect1.jpeg";
 import logo from "../logo/logo2.png";
 
@@ -20,6 +20,7 @@ const Lobby = ({
   inLobby,
   mute,
   setMute,
+  winningTeam,
 }) => {
   useEffect(() => {
     const updateTeams = (teams) => {
@@ -166,6 +167,23 @@ const Lobby = ({
           </div>
         </div>
       </div>
+
+      <Dimmer
+        active={showResult}
+        onClickOutside={() => setShowResult(false)}
+        page
+      >
+        <p className="text-white font-black text-6xl mb-7">
+          {winningTeam === "red" && (
+            <span className="text-red-500 text-7xl">Red</span>
+          )}
+          {winningTeam === "blue" && (
+            <span className="text-blue-500 text-7xl">Blue</span>
+          )}
+          {winningTeam === "draw" || <span> team has won the game!!!</span>}
+          {winningTeam === "draw" && <span> The game has been drawn!!!</span>}
+        </p>
+      </Dimmer>
     </div>
   );
 };

@@ -12,6 +12,7 @@ const GameArea = ({ name, room }) => {
   const [host, setHost] = useState(false);
   const [music] = useState(new Audio(got));
   const [mute, setMute] = useState(false);
+  const [winningTeam, setWinningTeam] = useState("");
 
   const socket = React.useContext(SocketContext);
 
@@ -20,9 +21,11 @@ const GameArea = ({ name, room }) => {
       setInLobby(false);
     });
 
-    socket.on("endGame", () => {
+    socket.on("endGame", (winningTeam) => {
+      setWinningTeam(winningTeam);
       setInLobby(true);
       setShowResult(true);
+      setTimeout(() => setShowResult(false), 4000);
     });
 
     socket.emit("isHost", { name, room }, (host) => {
@@ -58,6 +61,7 @@ const GameArea = ({ name, room }) => {
         inLobby={inLobby}
         mute={mute}
         setMute={setMute}
+        winningTeam={winningTeam}
       />
     );
   else

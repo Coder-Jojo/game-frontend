@@ -29,7 +29,7 @@ const Board = ({ socket, room, myTurn }) => {
     context.lineWidth = 5;
     contextRef.current = context;
     context.fillStyle = "white";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillRect(0, 0, 1500, 500);
   };
 
   const startDrawing = ({ nativeEvent }) => {
@@ -83,9 +83,11 @@ const Board = ({ socket, room, myTurn }) => {
 
     socket.on("onClear", () => {
       const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
-      context.fillStyle = "white";
-      context.fillRect(0, 0, canvas.width, canvas.height);
+      const context = canvas?.getContext("2d");
+      if (context !== undefined && context) {
+        context.fillStyle = "white";
+        context.fillRect(0, 0, 1500, 500);
+      }
     });
 
     socket.on("onBrushColor", (brushColor) => {
@@ -111,6 +113,8 @@ const Board = ({ socket, room, myTurn }) => {
 
     socket.on("stopDraw", () => {
       setCanDraw(false);
+      contextRef.current.closePath();
+      setIsDrawing(false);
     });
   }, [socket, sound]);
 
@@ -120,7 +124,7 @@ const Board = ({ socket, room, myTurn }) => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     context.fillStyle = "white";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillRect(0, 0, 1500, 500);
     socket.emit("clear", { room });
   };
 

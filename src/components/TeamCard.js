@@ -31,7 +31,7 @@ const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
         <h5 className={`mb-1 text-${team}-300`}>Operative(s)</h5>
         <List horizontal celled>
           {teamMem
-            .filter((mem) => mem.informer === false)
+            .filter((mem) => mem.isDetective === false)
             .map((mem, i) => {
               return (
                 <List.Item key={i}>
@@ -57,7 +57,7 @@ const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
         <h5 className={`mb-1 text-${team}-300`}>Detective(s)</h5>
         <List horizontal celled>
           {teamMem
-            .filter((mem) => mem.informer === true)
+            .filter((mem) => mem.isDetective === true)
             .map((mem, i) => {
               return (
                 <List.Item key={i}>
