@@ -28,6 +28,10 @@ const GameArea = ({ name, room }) => {
       setTimeout(() => setShowResult(false), 4000);
     });
 
+    socket.on("onIsHost", (ans) => {
+      setHost(ans);
+    });
+
     socket.emit("isHost", { name, room }, (host) => {
       setHost(host);
     });

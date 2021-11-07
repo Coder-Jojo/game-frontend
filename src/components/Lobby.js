@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TeamCard } from "./";
 import { List, Label, Button, Icon, Dimmer } from "semantic-ui-react";
 import backgroundImage from "../assets/detect1.jpeg";
@@ -22,6 +22,8 @@ const Lobby = ({
   setMute,
   winningTeam,
 }) => {
+  const [joinGame, setJoinGame] = useState(false);
+
   useEffect(() => {
     const updateTeams = (teams) => {
       setSpectators(teams.filter((s) => s.team === -1));
@@ -31,6 +33,10 @@ const Lobby = ({
 
     socket.emit("getLobbyStatus", room, (teams) => {
       updateTeams(teams);
+    });
+
+    socket.emit("isGameRunning", room, (ans) => {
+      setJoinGame(ans);
     });
 
     socket.on("teamsUpdated", (teams) => {
@@ -53,6 +59,10 @@ const Lobby = ({
     socket.emit("createGame", room, (err) => {
       if (err) alert(err);
     });
+  };
+
+  const handleJoinGame = () => {
+    socket.emit("joinRunningGame", { room, name });
   };
 
   return (
@@ -98,6 +108,15 @@ const Lobby = ({
                     onClick={(e) => handleCreateGame(e)}
                   >
                     Start Game
+                  </Button>
+                )}
+                {joinGame && (
+                  <Button
+                    compact
+                    color="purple"
+                    onClick={() => handleJoinGame()}
+                  >
+                    Join Game
                   </Button>
                 )}
               </div>

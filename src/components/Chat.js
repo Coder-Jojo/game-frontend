@@ -75,11 +75,21 @@ const Chat = ({ socket, name, room }) => {
     );
   };
 
+  const StartNextRound = ({ msg }) => {
+    return (
+      <div className="bg-gray-800 text-yellow-400 font-black p-1 pb-2 border-2 border-yellow-800">
+        {msg}
+      </div>
+    );
+  };
+
   const CreateMessage = ({ msg }) => {
     if (msg.type === 0) return <RedMsg name={msg.name} msg={msg.msg} />;
     else if (msg.type === 1) return <BlueMsg name={msg.name} msg={msg.msg} />;
     else if (msg.type === 2) return <CorrectAns msg={msg.msg} />;
     else if (msg.type === 3) return <NewRound msg={msg.msg} />;
+    else if (msg.type === 4) return <></>;
+    else if (msg.type === 5) return <StartNextRound msg={msg.msg} />;
     else return <Cheating name={msg.name} />;
   };
 
