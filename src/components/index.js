@@ -7,3 +7,5 @@ export { default as Game } from "./Game.js";
 export { default as TeamCard } from "./TeamCard.js";
 export { default as ShowGrid } from "./ShowGrid.js";
 export { default as Card } from "./Card.js";
+export { default as Topbar } from "./Topbar.js";
+export { default as Options } from "./Options.js";

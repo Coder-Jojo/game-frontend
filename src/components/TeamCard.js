@@ -3,10 +3,16 @@ import { Button, List } from "semantic-ui-react";
 
 const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
   const [bgColor, setBgColor] = useState("bg-red-600");
+  const [roleColor, setRoleColor] = useState("text-red-300");
 
   useEffect(() => {
-    if (team === "red") setBgColor("bg-red-600");
-    else setBgColor("bg-blue-600");
+    if (team === "red") {
+      setBgColor("bg-red-600");
+      setRoleColor("text-red-300");
+    } else {
+      setBgColor("bg-blue-600");
+      setRoleColor("text-blue-300");
+    }
   }, [team]);
 
   const handleUpdateTeams = (e, informer) => {
@@ -28,7 +34,7 @@ const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
       </div>
 
       <div className="flex flex-col mt-5">
-        <h5 className={`mb-1 text-${team}-300`}>Operative(s)</h5>
+        <h5 className={`mb-1 ${roleColor}`}>Operative(s)</h5>
         <List horizontal celled>
           {teamMem
             .filter((mem) => mem.isDetective === false)
@@ -54,7 +60,7 @@ const TeamCard = ({ socket, score, team, inLobby, teamMem, name, room }) => {
         )}
       </div>
       <div className="flex flex-col mt-5">
-        <h5 className={`mb-1 text-${team}-300`}>Detective(s)</h5>
+        <h5 className={`mb-1 ${roleColor}`}>Detective(s)</h5>
         <List horizontal celled>
           {teamMem
             .filter((mem) => mem.isDetective === true)

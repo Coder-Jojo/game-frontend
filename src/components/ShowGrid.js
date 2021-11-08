@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Card } from ".";
-import { Button, Modal, Checkbox } from "semantic-ui-react";
+import { Button, Modal } from "semantic-ui-react";
 import sound1 from "../sounds/jingle.wav";
 
-const ShowGrid = ({ socket, name, room, detective, myTurn }) => {
+const ShowGrid = ({
+  socket,
+  name,
+  room,
+  detective,
+  myTurn,
+  cardsOnEachRound,
+}) => {
   const [wordArr, setWordArr] = useState([]);
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState(false);
-  const [cardsOnEachRound, setCardsOnEachRound] = useState(true);
   const [selected, setSelected] = useState(-1);
   const [gridSound] = useState(new Audio(sound1));
 
@@ -47,18 +52,9 @@ const ShowGrid = ({ socket, name, room, detective, myTurn }) => {
 
   return (
     <>
-      <div className="h-full flex justify-center pt-10">
-        <Button className="h-20" color="purple" onClick={() => setOpen(true)}>
-          <p className="text-5xl">Show Cards</p>
-        </Button>
-        <Button
-          className="h-20"
-          color="purple"
-          onClick={() => setOptions(true)}
-        >
-          <p className="text-5xl">Options</p>
-        </Button>
-      </div>
+      <Button color="purple" onClick={() => setOpen(true)}>
+        <p className="text-5xl">Show Cards</p>
+      </Button>
 
       <Modal
         onClose={() => setOpen(false)}
@@ -95,34 +91,6 @@ const ShowGrid = ({ socket, name, room, detective, myTurn }) => {
               </Button>
             )}
           </div>
-        </div>
-      </Modal>
-
-      <Modal
-        onClose={() => setOptions(false)}
-        onOpen={() => setOptions(true)}
-        open={options}
-        size="mini"
-      >
-        <div className="bg-gray-800 text-white grid place-items-center pt-3 pb-3 border-t-2 border border-l-2 border-r-2 border-white">
-          <div className="font-black text-6xl text-purple-600 mb-8">
-            Options
-          </div>
-          <div className="flex place-items-center">
-            <Checkbox
-              checked={cardsOnEachRound}
-              toggle
-              onClick={() => setCardsOnEachRound((c) => !c)}
-            />
-            <span className="font-semibold ml-2">
-              Automatically show cards after every round
-            </span>
-          </div>
-        </div>
-        <div className="w-full grid place-items-center bg-gradient-to-b from-gray-500 to-gray-800 border-2 border-white p-2">
-          <Button color="red" onClick={() => setOptions(false)}>
-            <p className="text-xl font-black">Close</p>
-          </Button>
         </div>
       </Modal>
     </>

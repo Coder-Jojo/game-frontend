@@ -35,7 +35,7 @@ const Chat = ({ socket, name, room }) => {
 
   const RedMsg = ({ name, msg }) => {
     return (
-      <div className="bg-red-400 p-1 pb-2 border border-red-800">
+      <div className="bg-red-400 p-1 pb-2 border border-white">
         <span className="text-black font-semibold ">{name}: </span>
         <span className="text-white">{msg}</span>
       </div>
@@ -44,7 +44,7 @@ const Chat = ({ socket, name, room }) => {
 
   const BlueMsg = ({ name, msg }) => {
     return (
-      <div className="bg-blue-400 p-1 pb-2 border border-blue-800">
+      <div className="bg-blue-400 p-1 pb-2 border border-white">
         <span className="text-black font-semibold">{name}: </span>
         <span className="text-white">{msg}</span>
       </div>
@@ -53,7 +53,7 @@ const Chat = ({ socket, name, room }) => {
 
   const CorrectAns = ({ msg }) => {
     return (
-      <div className="bg-gray-200 text-green-600 font-semibold p-1 pb-2 border border-black">
+      <div className="bg-gray-200 text-green-600 font-semibold p-1 pb-2 border border-white">
         {msg}
       </div>
     );
@@ -61,7 +61,7 @@ const Chat = ({ socket, name, room }) => {
 
   const Cheating = ({ name }) => {
     return (
-      <div className="bg-gray-200 text-red-600 font-semibold p-1 pb-2 border border-black">
+      <div className="bg-gray-200 text-red-600 font-semibold p-1 pb-2 border border-white">
         PhaQueue {name} for cheating
       </div>
     );
@@ -83,12 +83,20 @@ const Chat = ({ socket, name, room }) => {
     );
   };
 
+  const CloseWord = ({ msg }) => {
+    return (
+      <div className="bg-gray-800 text-yellow-400 font-semibold p-1 pb-2 border border-white">
+        {msg}
+      </div>
+    );
+  };
+
   const CreateMessage = ({ msg }) => {
     if (msg.type === 0) return <RedMsg name={msg.name} msg={msg.msg} />;
     else if (msg.type === 1) return <BlueMsg name={msg.name} msg={msg.msg} />;
     else if (msg.type === 2) return <CorrectAns msg={msg.msg} />;
     else if (msg.type === 3) return <NewRound msg={msg.msg} />;
-    else if (msg.type === 4) return <></>;
+    else if (msg.type === 4) return <CloseWord msg={msg.msg} />;
     else if (msg.type === 5) return <StartNextRound msg={msg.msg} />;
     else return <Cheating name={msg.name} />;
   };
