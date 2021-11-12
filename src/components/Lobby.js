@@ -3,6 +3,8 @@ import { TeamCard } from "./";
 import { List, Label, Button, Icon, Dimmer } from "semantic-ui-react";
 import backgroundImage from "../assets/detect1.jpeg";
 import logo from "../logo/logo2.png";
+import joinSound from "../sounds/join.wav";
+import Cookies from "universal-cookie";
 
 const Lobby = ({
   socket,
@@ -18,11 +20,25 @@ const Lobby = ({
   blueTeam,
   host,
   inLobby,
-  mute,
-  setMute,
   winningTeam,
 }) => {
+  const cookies = new Cookies();
   const [joinGame, setJoinGame] = useState(false);
+  const [mute, setMute] = useState(true);
+  const [sound] = useState(new Audio(joinSound));
+  const [playSound, setPlaySound] = useState(false);
+
+  useEffect(() => {
+    const cookies = new Cookies();
+    setMute(cookies.get("mute") === "true");
+  }, []);
+
+  useEffect(() => {
+    if (!mute) {
+      sound.currentTime = 0;
+      sound.play();
+    }
+  }, [mute, playSound, sound]);
 
   useEffect(() => {
     const updateTeams = (teams) => {
@@ -40,13 +56,27 @@ const Lobby = ({
     });
 
     socket.on("teamsUpdated", (teams) => {
+      setPlaySound((s) => !s);
       updateTeams(teams);
     });
   }, [socket, room, setSpectators, setBlueTeam, setRedTeam]);
 
   const handleCopy = (e) => {
     e.preventDefault();
-    navigator.clipboard.writeText(room);
+    const link =
+      window.location.protocol +
+      "//" +
+      window.location.hostname +
+      `?room=${room}`;
+
+    const invite = `You have been invited for JojoGame\nRoom Id: ${room}\n${link}`;
+    navigator.clipboard.writeText(invite);
+  };
+
+  const handleMute = (e, value) => {
+    e.preventDefault();
+    setMute(value);
+    cookies.set("mute", value);
   };
 
   const handleReset = (e) => {
@@ -65,9 +95,13 @@ const Lobby = ({
     socket.emit("joinRunningGame", { room, name });
   };
 
+  const handleLeave = () => {
+    window.location.reload();
+  };
+
   return (
     <div
-      className="h-screen bg-center bg-cover"
+      className="h-screen bg-center bg-cover overflow-hidden"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className="grid grid-rows-6 gap-3 max-w-screen-lg mx-auto h-full">
@@ -83,12 +117,12 @@ const Lobby = ({
               </p>
             </div>
 
-            <div className="h-full grid place-content-center p-0">
-              <div>
+            <div className="h-full grid place-content-center p-0 overflow-hidden">
+              <div className="flex overflow-hidden">
                 <Button
                   compact
                   color={mute ? "green" : "red"}
-                  onClick={() => setMute((m) => !m)}
+                  onClick={(e) => handleMute(e, !mute)}
                 >
                   {mute ? "Unmute" : "Mute"}
                 </Button>
@@ -119,6 +153,9 @@ const Lobby = ({
                     Join Game
                   </Button>
                 )}
+                <Button compact color="red" onClick={handleLeave}>
+                  Leave
+                </Button>
               </div>
             </div>
           </div>

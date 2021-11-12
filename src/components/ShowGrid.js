@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card } from ".";
 import { Button, Modal } from "semantic-ui-react";
-import sound1 from "../sounds/jingle.wav";
 
 const ShowGrid = ({
   socket,
@@ -14,7 +13,6 @@ const ShowGrid = ({
   const [wordArr, setWordArr] = useState([]);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(-1);
-  const [gridSound] = useState(new Audio(sound1));
 
   useEffect(() => {
     socket.emit("getCards", room, (arr) => {
@@ -28,20 +26,16 @@ const ShowGrid = ({
 
     socket.on("openCards", () => {
       setOpen(cardsOnEachRound);
-      gridSound.pause();
-      gridSound.currentTime = 0;
-      gridSound.play();
     });
 
     socket.on("closeCards", () => {
       setOpen(false);
-      gridSound.pause();
     });
 
     socket.on("updateSelected", (selected) => {
       setSelected(selected);
     });
-  }, [socket, name, room, gridSound, cardsOnEachRound]);
+  }, [socket, name, room, cardsOnEachRound]);
 
   const handleClick = (e) => {
     e.preventDefault();

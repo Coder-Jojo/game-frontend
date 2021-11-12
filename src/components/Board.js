@@ -1,15 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Menu, Icon, Button, Progress, Dimmer } from "semantic-ui-react";
-import resultSound from "../sounds/res2.wav";
+import sound1 from "../sounds/res2.wav";
 
-const Board = ({ socket, room, myTurn }) => {
+const Board = ({ socket, room, myTurn, resultSound }) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushRadius, setBrushRadius] = useState(5);
   const [brushColor, setBrushColor] = useState("black");
   const [dimmer, setDimmer] = useState(false);
   const [word, setWord] = useState("");
   const [canDraw, setCanDraw] = useState(false);
-  const [sound] = useState(new Audio(resultSound));
+  const [sound] = useState(new Audio(sound1));
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
@@ -104,7 +104,7 @@ const Board = ({ socket, room, myTurn }) => {
       setWord(word);
       setDimmer(true);
       setTimeout(() => setDimmer(false), 5000);
-      sound.play();
+      if (resultSound) sound.play();
     });
 
     socket.on("startDraw", () => {
@@ -116,7 +116,7 @@ const Board = ({ socket, room, myTurn }) => {
       contextRef.current.closePath();
       setIsDrawing(false);
     });
-  }, [socket, sound]);
+  }, [socket, sound, resultSound]);
 
   const handleClear = () => {
     if (!myTurn || !canDraw) return;

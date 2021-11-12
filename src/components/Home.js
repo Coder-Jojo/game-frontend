@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Cookies from "universal-cookie";
 import { Button, Input, Modal } from "semantic-ui-react";
 import SocketContext from "../socketContext";
 import backgroundImage from "../assets/detect1.jpeg";
@@ -9,13 +10,25 @@ const Home = ({ name, setName, setRoom, room, setInGame }) => {
 
   const [openJoin, setOpenJoin] = useState(false);
 
+  useEffect(() => {
+    const cookies = new Cookies();
+    const query = window.location.search;
+    if (query.substr(0, 6) === "?room=") {
+      setRoom(query.substr(6));
+      setOpenJoin(true);
+    }
+
+    if (cookies.get("name") !== undefined) setName(cookies.get("name"));
+  }, [setRoom, setName]);
+
   const handleCreateRoom = (e) => {
     e.preventDefault();
     if (name === "") return;
 
     socket.emit("createRoom", name, (room) => {
       setRoom(room);
-
+      const cookies = new Cookies();
+      cookies.set("name", name);
       setInGame(true);
     });
   };
@@ -35,6 +48,8 @@ const Home = ({ name, setName, setRoom, room, setInGame }) => {
       if (err) {
         alert(err);
       } else {
+        const cookies = new Cookies();
+        cookies.set("name", name);
         setInGame(true);
       }
     });

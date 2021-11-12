@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SocketContext from "../socketContext";
 import { Lobby, Game } from "./";
-import got from "../sounds/got.mp3";
 
 const GameArea = ({ name, room }) => {
   const [inLobby, setInLobby] = useState(true);
@@ -10,8 +9,6 @@ const GameArea = ({ name, room }) => {
   const [blueTeam, setBlueTeam] = useState([]);
   const [spectators, setSpectators] = useState([]);
   const [host, setHost] = useState(false);
-  const [music] = useState(new Audio(got));
-  const [mute, setMute] = useState(false);
   const [winningTeam, setWinningTeam] = useState("");
 
   const socket = React.useContext(SocketContext);
@@ -37,16 +34,6 @@ const GameArea = ({ name, room }) => {
     });
   }, [socket, setHost, name, room]);
 
-  useEffect(() => {
-    if (inLobby && !mute) {
-      music.currentTime = 0;
-      music.play();
-      music.loop = true;
-    } else {
-      music.pause();
-    }
-  }, [music, inLobby, mute]);
-
   if (inLobby)
     return (
       <Lobby
@@ -63,8 +50,6 @@ const GameArea = ({ name, room }) => {
         blueTeam={blueTeam}
         host={host}
         inLobby={inLobby}
-        mute={mute}
-        setMute={setMute}
         winningTeam={winningTeam}
       />
     );

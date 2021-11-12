@@ -10,6 +10,10 @@ const Topbar = ({
   room,
   setCardsOnEachRound,
   cardsOnEachRound,
+  messageSound,
+  setMessageSound,
+  resultSound,
+  setResultSound,
 }) => {
   const [word, setWord] = useState("");
 
@@ -33,7 +37,14 @@ const Topbar = ({
   }, [socket, room, wordLen]);
 
   const handleCopyRoomId = () => {
-    navigator.clipboard.writeText(room);
+    const link =
+      window.location.protocol +
+      "//" +
+      window.location.hostname +
+      `?room=${room}`;
+
+    const invite = `You have been invited for JojoGame\nRoom Id: ${room}\n${link}`;
+    navigator.clipboard.writeText(invite);
   };
 
   const handleLeave = () => {
@@ -41,7 +52,7 @@ const Topbar = ({
   };
 
   return (
-    <div className="h-18 flex-none bg-gray-800 grid grid-cols-11">
+    <div className="h-20 flex-none bg-gray-800 grid grid-cols-11">
       <div className="col-span-4 flex overflow-hidden pl-5">
         <img src={logo} alt="logo" style={{ height: "100%" }} />
         <div className="self-center font-bold text-5xl text-white oldstyle-nums ml-6">
@@ -53,7 +64,7 @@ const Topbar = ({
         <p>{word}</p>
       </div>
 
-      <div className="col-span-4 h-full w-full grid place-content-center overflow-hidden">
+      <div className="col-span-4 h-5/6 w-full grid place-content-center overflow-hidden">
         <div className="flex">
           <Button color="teal" onClick={handleCopyRoomId}>
             Copy RoomId
@@ -61,6 +72,10 @@ const Topbar = ({
           <Options
             setCardsOnEachRound={setCardsOnEachRound}
             cardsOnEachRound={cardsOnEachRound}
+            messageSound={messageSound}
+            setMessageSound={setMessageSound}
+            resultSound={resultSound}
+            setResultSound={setResultSound}
           />
           <Button color="red" onClick={handleLeave}>
             Leave

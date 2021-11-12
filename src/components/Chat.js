@@ -4,27 +4,32 @@ import ScrollToBottom from "react-scroll-to-bottom";
 import positiveSound from "../sounds/p1.wav";
 import negativeSound from "../sounds/n2.wav";
 
-const Chat = ({ socket, name, room }) => {
+const Chat = ({ socket, name, room, messageSound }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [positive] = useState(new Audio(positiveSound));
   const [negative] = useState(new Audio(negativeSound));
+  const [playSound, setPlaySound] = useState(100);
+
+  useEffect(() => {
+    if (playSound === 2 && messageSound) {
+      positive.currentTime = 0;
+      positive.play();
+    } else if (playSound < 0 && messageSound) {
+      negative.currentTime = 0;
+      negative.play();
+    }
+    // playSound((p) => p + 500);
+  }, [playSound, positive, negative, messageSound]);
 
   useEffect(() => {
     socket.on("getMessage", (message) => {
       setMessages((prev) => [...prev, message]);
 
-      if (message.type === 2) {
-        positive.pause();
-        positive.currentTime = 0;
-        positive.play();
-      } else if (message.type === -1) {
-        negative.pause();
-        negative.currentTime = 0;
-        negative.play();
-      }
+      setPlaySound(message.type);
+      setPlaySound(100);
     });
-  }, [socket, positive, negative]);
+  }, [socket]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();

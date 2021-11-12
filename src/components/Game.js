@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Board, Chat, TeamCard, ShowGrid, Topbar } from ".";
+import Cookies from "universal-cookie";
 import red from "../assets/red4.jpg";
 import blue from "../assets/blue3.jpg";
-import sound1 from "../sounds/atmos.mp3";
 
 const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
   const [score, setScore] = useState([0, 0]);
@@ -13,13 +13,24 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
   const [detective, setDetective] = useState(false);
   const [myTurn, setMyTurn] = useState(false);
   const [cardsOnEachRound, setCardsOnEachRound] = useState(true);
-  const [guessingSound] = useState(new Audio(sound1));
+  const [messageSound, setMessageSound] = useState(true);
+  const [resultSound, setResultSound] = useState(true);
+  const [height, setHeight] = useState(window.innerHeight - 70);
+
+  useEffect(() => {
+    const cookies = new Cookies();
+    if (cookies.get("cardsOnEachRound") !== undefined)
+      setCardsOnEachRound(cookies.get("cardsOnEachRound") === "true");
+    if (cookies.get("messageSound") !== undefined)
+      setMessageSound(cookies.get("messageSound") === "true");
+    if (cookies.get("resultSound") !== undefined)
+      setResultSound(cookies.get("resultSound") === "true");
+  }, []);
+
+  console.log("he");
 
   useEffect(() => {
     socket.on("updateTime", (time) => {
-      if (time >= 79) {
-        guessingSound.play();
-      }
       if (time >= 0) setTime(time);
     });
 
@@ -29,8 +40,6 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
 
     socket.on("resetTime", (time) => {
       setTime(time);
-      guessingSound.pause();
-      guessingSound.currentTime = 0;
     });
 
     socket.on("updateTurn", (turn) => {
@@ -56,7 +65,7 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
     socket.emit("getScore", room, (score) => {
       setScore(score);
     });
-  }, [socket, room, name, guessingSound]);
+  }, [socket, room, name]);
 
   useEffect(() => {
     if (detective) {
@@ -65,6 +74,18 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
       });
     }
   }, [socket, room, detective, turn, name]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setHeight(window.innerHeight - 70);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div
@@ -78,10 +99,14 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
         wordLen={wordLen}
         cardsOnEachRound={cardsOnEachRound}
         setCardsOnEachRound={setCardsOnEachRound}
+        messageSound={messageSound}
+        setMessageSound={setMessageSound}
+        resultSound={resultSound}
+        setResultSound={setResultSound}
       />
 
-      <div className="flex-grow grid grid-cols-5 gap-2">
-        <div className="col-span-1 grid grid-rows-7 overflow-hidden pt-2">
+      <div className=" grid grid-cols-5 gap-2" style={{ height: height }}>
+        <div className="col-span-1 grid grid-rows-7 pt-2">
           <div className="row-span-1 grid place-content-center">
             <ShowGrid
               socket={socket}
@@ -117,11 +142,21 @@ const Game = ({ socket, name, room, redTeam, blueTeam, inLobby }) => {
         </div>
 
         <div className="col-span-3 h-full overflow-hidden pt-2">
-          <Board socket={socket} myTurn={myTurn} room={room} />
+          <Board
+            socket={socket}
+            myTurn={myTurn}
+            room={room}
+            resultSound={resultSound}
+          />
         </div>
 
         <div className="col-span-1 h-full overflow-hidden pt-2 pb-3">
-          <Chat socket={socket} name={name} room={room} />
+          <Chat
+            socket={socket}
+            name={name}
+            room={room}
+            messageSound={messageSound}
+          />
         </div>
       </div>
     </div>
