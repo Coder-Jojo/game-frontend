@@ -4,7 +4,8 @@ import { Home, GameArea } from "./components";
 import SocketContext from "./socketContext";
 
 // const socket = io("http://localhost:5000");
-const socket = io("https://jojo-game-1.herokuapp.com");
+// const socket = io("https://jojo-game-1.herokuapp.com");
+const socket = io("https://jojo-game-backend.onrender.com");
 
 const App = () => {
   const [inGame, setInGame] = useState(false);
