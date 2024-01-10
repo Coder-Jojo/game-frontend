@@ -9,7 +9,7 @@ import LoadingPage from "./loading";
 const socket = io("https://jojo-game-backend.onrender.com");
 socket.connect();
 var forcedDelay = true;
-setTimeout(() => forcedDelay = false, 3000);
+setTimeout(() => forcedDelay = false, 200);
 
 const App = () => {
   const [inGame, setInGame] = useState(false);
